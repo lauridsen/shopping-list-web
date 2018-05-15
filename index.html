@@ -23,18 +23,19 @@
 </head>
 
 <body>
-  <h1>Item Fire</h1>
+  <h1>Shopping List</h1>
   <h3>Save all your Favorite Shopping Items here</h3>
   <hr />
-  <form onsubmit="saveToList(event)">
+  <form onsubmit="saveToList(event)" id="inputForm">
     <input type="text" id="name" placeholder="Name" />
     <input type="number" id="quantity" placeholder="Quantity" />
     <input type="text" id="measurement" placeholder="Measurement" />
     <input type="submit">
   </form>
-  <h4>My Favorite Movies</h4>
-  <ol id="favMovies">
-  </ol>
+  <h4>My List:</h4>
+  <ul id="shoppingList">
+
+  </ul>
 
   <!-- Import and configure the Firebase SDK -->
   <!-- These scripts are made available when the app is served or deployed on Firebase Hosting -->

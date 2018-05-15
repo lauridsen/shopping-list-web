@@ -17,17 +17,17 @@ function writeNewItem(name, measurement, quantity) {
 }
 
 function saveToList(event) {
-    var name = event.target[0].value.trim();
-    var quantity = parseInt(event.target[1].value, 10);
-    var measurement = event.target[2].value.trim();
+    event.preventDefault();
+
+    var name = document.getElementById("inputForm").elements["name"].value;
+    var measurement = document.getElementById("inputForm").elements["measurement"].value;
+    var quantity = document.getElementById("inputForm").elements["quantity"].value;
 
     if (name.length > 0 && measurement.length > 0 && quantity) {
-        saveToFB(name, measurement, quantity);
+        saveToFB(name.trim(), measurement.trim(), quantity.trim());
+        document.getElementById("inputForm").reset();
     }
 
-    document.getElementById('name').value = '';
-    document.getElementById('measurement').value = '';
-    document.getElementById('quantity').value = '';
 };
 
 function saveToFB(name, measurement, quantity) {
@@ -50,18 +50,19 @@ function saveToFB(name, measurement, quantity) {
 function refreshUI(list) {
     var lis = '';
     for (var i = 0; i < list.length; i++) {
-        lis += '<li data-key="' + list[i].key + '">' + list[i].name + '</li>';
+        lis += '<li>' + list[i].name + '</li>';
     };
-    //document.getElementById('favMovies').innerHTML = lis;
-    console.log(lis);
+    document.getElementById('shoppingList').innerHTML = lis;
 };
 
 var ref = firebase.database().ref("items");
 
 ref.on("value", function (snapshot) {
+    let items = [];
     snapshot.forEach(function (childSnapshot) {
         var childData = childSnapshot.val();
         var id = childData.id;
-        console.log(childData);
+        items.push(childData);
     })
+    refreshUI(items)
 })
