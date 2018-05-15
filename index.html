@@ -23,30 +23,79 @@
 </head>
 
 <body>
-  <h1>Shopping List</h1>
-  <h3>Save all your Favorite Shopping Items here</h3>
-  <hr />
-  <form onsubmit="saveToList(event)" id="inputForm">
-    <input type="text" id="name" placeholder="Name" />
-    <input type="number" id="quantity" placeholder="Quantity" />
-    <input type="text" id="measurement" placeholder="Measurement" />
-    <input type="submit">
-  </form>
-  <h4>My List:</h4>
-  <ul id="shoppingList">
+  <div class="wrapper">
+    <h1>Shopping List</h1>
+    <h3>Save all your Favorite Shopping Items here</h3>
+    <hr />
+    <form onsubmit="saveToList(event)" id="inputForm">
+      <input type="text" id="name" placeholder="Name" />
+      <input type="number" id="quantity" placeholder="Quantity" />
+      <input type="text" id="measurement" placeholder="Measurement" />
+      <input type="submit">
+    </form>
+    <ul id="shoppingList">
 
-  </ul>
+    </ul>
+  </div>
+  <div class="popUpContainer">
 
+  </div>
   <!-- Import and configure the Firebase SDK -->
   <!-- These scripts are made available when the app is served or deployed on Firebase Hosting -->
   <!-- If you do not serve/host your project using Firebase Hosting see https://firebase.google.com/docs/web/setup -->
   <script src="/__/firebase/3.9.0/firebase-app.js"></script>
-  <script src="/__/firebase/3.9.0/firebase-auth.js"></script>
   <script src="/__/firebase/3.9.0/firebase-database.js"></script>
   <script src="/__/firebase/init.js"></script>
 
   <!-- <script src="scripts/main.js"></script> -->
   <script src="scripts/app.js"></script>
 </body>
+
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+  }
+  .wrapper {
+    margin: 0 auto;
+    max-width: 800px;
+    padding: 40px;
+  }
+
+  #inputForm {
+    text-align: center;
+  }
+  .shopping-list-ware {
+    padding: 20px;
+    border-radius: 3px;
+    margin: 10px 0;
+    box-shadow: 0 1.5px 20px rgba(0, 0, 0, 0.15);
+    background-color: #fff;
+  }
+
+  body {
+    position: relative;
+  }
+
+  .popUpContainer {
+    position: fixed;
+    bottom: 0;
+    left: 20px;
+  }
+
+  .popUp {
+    padding: 10px;
+    background-color: #fff;
+    box-shadow: 0 1.5px 20px rgba(0, 0, 0, 0.15);
+    margin: 10px 0;
+    opacity: 1;
+    -webkit-transition: opacity 300ms ease-out;
+    transition: opacity 300ms ease-out;
+  }
+
+  .popUp button {
+    margin-left: 10px;
+  }
+</style>
 
 </html>

@@ -1,5 +1,8 @@
 {
     "globals": {
         "componentHandler": true
-    }
+    },
+    "parserOptions": {
+        "ecmaVersion": 6
+      }
 }

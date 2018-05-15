@@ -1,0 +1,41 @@
+[debug] [2018-05-15T19:16:59.486Z] ----------------------------------------------------------------------
+[debug] [2018-05-15T19:16:59.488Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\pjuke\AppData\Roaming\npm\node_modules\firebase-tools\bin\firebase serve
+[debug] [2018-05-15T19:16:59.488Z] CLI Version:   3.18.4
+[debug] [2018-05-15T19:16:59.488Z] Platform:      win32
+[debug] [2018-05-15T19:16:59.488Z] Node Version:  v9.5.0
+[debug] [2018-05-15T19:16:59.488Z] Time:          Tue May 15 2018 21:16:59 GMT+0200 (Rom, sommertid)
+[debug] [2018-05-15T19:16:59.488Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2018-05-15T19:16:59.497Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-05-15T19:16:59.497Z] > authorizing via signed-in user
+[debug] [2018-05-15T19:16:59.499Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2018-05-15T19:16:59.499Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ { refresh_token: '1/uqOof7w0LFThrZmL7Gicd3pmPRHv2IQGAhb2N5GHlJw',
+  client_id: '563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com',
+  client_secret: 'j9iVZfS8kkCEFUPaAeJV0sAi',
+  grant_type: 'refresh_token',
+  scope: 'email https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/cloudplatformprojects.readonly https://www.googleapis.com/auth/firebase openid' } 
+ Tue May 15 2018 21:16:59 GMT+0200 (Rom, sommertid)
+[debug] [2018-05-15T19:16:59.711Z] <<< HTTP RESPONSE 200
+[debug] [2018-05-15T19:16:59.714Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/shopping-list-e9330  
+  
+ Tue May 15 2018 21:16:59 GMT+0200 (Rom, sommertid)
+[debug] [2018-05-15T19:17:00.473Z] <<< HTTP RESPONSE 200
+[debug] [2018-05-15T19:17:00.474Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/shopping-list-e9330/tokens  
+  
+ Tue May 15 2018 21:17:00 GMT+0200 (Rom, sommertid)
+[debug] [2018-05-15T19:17:01.196Z] <<< HTTP RESPONSE 200
+[debug] [2018-05-15T19:17:01.197Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/shopping-list-e9330  
+  
+ Tue May 15 2018 21:17:01 GMT+0200 (Rom, sommertid)
+[debug] [2018-05-15T19:17:02.031Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from 'C:\Users\pjuke\Documents\git\shopping-list-web\shopping-list-web'...
+[info] 
+[debug] [2018-05-15T19:17:02.034Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/722348529589/clients/_:getWebAppConfig  
+  
+ Tue May 15 2018 21:17:02 GMT+0200 (Rom, sommertid)
+[debug] [2018-05-15T19:17:02.549Z] <<< HTTP RESPONSE 200
+[info] i  hosting: Serving hosting files from: ./
+[info] +  hosting: Local server: http://localhost:5000
+

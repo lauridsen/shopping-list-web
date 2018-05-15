@@ -48,11 +48,21 @@ function saveToFB(name, measurement, quantity) {
 };
 
 function refreshUI(list) {
-    var lis = '';
+
+    const shoppingList = document.getElementById('shoppingList');
+
+    var wares = ``;
     for (var i = 0; i < list.length; i++) {
-        lis += '<li>' + list[i].name + '</li>';
+        wares += `
+            <div data-item-key="${list[i].key}" class="shopping-list-ware">
+                <p>${list[i].quantity} ${list[i].measurement} ${list[i].name}</p>
+                <button class="btn btn-edit"> Edit </button>
+                <button class="btn btn-delete"> Delete </button>
+            </div>
+            `;
     };
-    document.getElementById('shoppingList').innerHTML = lis;
+    document.getElementById('shoppingList').innerHTML = wares;
+    updateListeners();
 };
 
 var ref = firebase.database().ref("items");
@@ -61,8 +71,72 @@ ref.on("value", function (snapshot) {
     let items = [];
     snapshot.forEach(function (childSnapshot) {
         var childData = childSnapshot.val();
-        var id = childData.id;
+        childData.key = childSnapshot.key;
         items.push(childData);
     })
+    console.log(items)
     refreshUI(items)
 })
+
+ref.on("child_removed", function (data) {
+    console.log("Shit got removed, yo!: ", data.key, data.val());
+    showToast(data.key, data);
+})
+
+function updateListeners() {
+    const editButtons = document.querySelectorAll('.shopping-list-ware .btn-edit');
+    Array.from(editButtons).forEach(ware => {
+        ware.addEventListener('click', (event) => {
+            const wareKey = event.target.parentElement.attributes["data-item-key"].nodeValue;
+            getSingleWare(wareKey);
+        })
+    })
+    const deleteButtons = document.querySelectorAll('.shopping-list-ware .btn-delete');
+    Array.from(deleteButtons).forEach(ware => {
+        ware.addEventListener('click', (event) => {
+            const wareKey = event.target.parentElement.attributes["data-item-key"].nodeValue;
+            deleteWareFB(wareKey);
+        })
+    })
+}
+
+function getSingleWare(key) {
+    var wareRef = firebase.database().ref("items").child(key).once('value').then(snapshot => {
+        console.log(key, ": ",snapshot.val());
+    });
+}
+
+function updateWareFB(key, data) {
+    firebase.database().ref("items").child(key).update(data);
+}
+
+function deleteWareFB(key) {
+    firebase.database().ref("items").child(key).remove();
+}
+
+function showToast(key, data) {
+    const node = document.createElement("div");
+    node.classList.add('popUp')
+    const textNode = document.createTextNode(`${data.val().name} was removed from your shopping list`);
+    node.appendChild(textNode);
+    document.querySelector('.popUpContainer').appendChild(node);
+    const buttonNode = document.createElement("BUTTON");
+    const buttonText = document.createTextNode("Undo");
+    buttonNode.appendChild(buttonText);
+    node.appendChild(buttonNode);
+
+    buttonNode.addEventListener('click', () => {
+        firebase.database().ref("items").child(key).set(data.val());
+        node.style.opacity = '0';
+        setTimeout(() => {
+            node.remove();
+        }, 1000)
+    })
+
+    setTimeout(() => {
+        node.style.opacity = '0';
+        setTimeout(() => {
+            node.remove();
+        }, 300)
+    }, 3000)
+}
