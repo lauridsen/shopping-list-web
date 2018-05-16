@@ -88,6 +88,7 @@ function updateListeners() {
     Array.from(editButtons).forEach(ware => {
         ware.addEventListener('click', (event) => {
             const wareKey = event.target.parentElement.attributes["data-item-key"].nodeValue;
+            editSingleWare(event, wareKey);
             getSingleWare(wareKey);
         })
     })
@@ -103,6 +104,33 @@ function updateListeners() {
 function getSingleWare(key) {
     var wareRef = firebase.database().ref("items").child(key).once('value').then(snapshot => {
         console.log(key, ": ",snapshot.val());
+    });
+}
+
+function editSingleWare(event, key) {
+    var wareRef = firebase.database().ref("items").child(key).once('value').then(snapshot => {
+        console.log(key, ": ",snapshot.val());
+        const item = snapshot.val();
+
+        let formInput = event.target.parentElement; 
+
+        formInput.innerHTML = `
+            <form id="editForm">
+                <input type="text" id="name" placeholder="Name" value="${item.name}"/>
+                <input type="number" id="quantity" placeholder="Quantity" value="${item.quantity}"/>
+                <input type="text" id="measurement" placeholder="Measurement" value="${item.measurement}"/>
+                <input type="submit">
+            </form>
+        `
+
+        formInput.addEventListener('submit', (event) => {
+            event.preventDefault();
+            item.name = event.target.elements["name"].value
+            item.quantity = event.target.elements["quantity"].value
+            item.measurement = event.target.elements["measurement"].value
+            updateWareFB(key, item);
+        })
+
     });
 }
 
