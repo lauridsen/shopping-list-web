@@ -3,7 +3,7 @@ function writeNewItem(name, measurement, quantity) {
     var postData = {
         measurement: measurement,
         name: name,
-        quantity: quantity,
+        quantity: parseInt(quantity),
     };
 
     // Get a key for a new Post.
@@ -19,12 +19,12 @@ function writeNewItem(name, measurement, quantity) {
 function saveToList(event) {
     event.preventDefault();
 
-    var name = document.getElementById("inputForm").elements["name"].value;
-    var measurement = document.getElementById("inputForm").elements["measurement"].value;
-    var quantity = document.getElementById("inputForm").elements["quantity"].value;
+    var name = document.getElementById("inputForm").elements["name"].value.trim();
+    var measurement = document.getElementById("inputForm").elements["measurement"].value.trim();
+    var quantity = parseInt(document.getElementById("inputForm").elements["quantity"].value.trim());
 
     if (name.length > 0 && measurement.length > 0 && quantity) {
-        saveToFB(name.trim(), measurement.trim(), quantity.trim());
+        saveToFB(name, measurement, quantity);
         document.getElementById("inputForm").reset();
     }
 
@@ -36,7 +36,7 @@ function saveToFB(name, measurement, quantity) {
         measurement: measurement,
         quantity: quantity
     }
-    // this will save data to Firebase
+    // this will save new data to Firebase
     // Get a key for a new Post.
     var newPostKey = firebase.database().ref().child('items').push().key;
 
@@ -103,16 +103,15 @@ function updateListeners() {
 
 function getSingleWare(key) {
     var wareRef = firebase.database().ref("items").child(key).once('value').then(snapshot => {
-        console.log(key, ": ",snapshot.val());
+        console.log(key, ": ", snapshot.val());
     });
 }
 
 function editSingleWare(event, key) {
     var wareRef = firebase.database().ref("items").child(key).once('value').then(snapshot => {
-        console.log(key, ": ",snapshot.val());
         const item = snapshot.val();
 
-        let formInput = event.target.parentElement; 
+        let formInput = event.target.parentElement;
 
         formInput.innerHTML = `
             <form id="editForm">
@@ -126,7 +125,7 @@ function editSingleWare(event, key) {
         formInput.addEventListener('submit', (event) => {
             event.preventDefault();
             item.name = event.target.elements["name"].value
-            item.quantity = event.target.elements["quantity"].value
+            item.quantity = parseInt(event.target.elements["quantity"].value)
             item.measurement = event.target.elements["measurement"].value
             updateWareFB(key, item);
         })
