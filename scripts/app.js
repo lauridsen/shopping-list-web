@@ -244,6 +244,10 @@ function login(event) {
 function logout() {
     firebase.auth().signOut().then(function(){
         //Signed out successfully
+        document.getElementById('signInLink').style.display = "none";
+        document.getElementById('signUpForm').style.display = "none";
+        document.getElementById('signUpLink').style.display = "block";
+        document.getElementById('loginForm').style.display = "flex";
     }).catch(function(error){
         //An error occured
         console.log(error.message);
