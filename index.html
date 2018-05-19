@@ -16,46 +16,71 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="description" content="Demonstrates the use of Google Cloud Database with a Firebase DB">
+  <meta name="description" content="Shopping List Web App">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Firebase Database Quickstart</title>
+  <title>Firebase Shopping List</title>
 
 </head>
 
 <body>
-  <div class="wrapper">
+  <div class="wrapper" id="appLogin">
+    <header>
+      <h1>Shopping List</h1>
+      <h3>Log in to proceed</h3>
+    </header>
+    <hr />
+    <form onsubmit="login(event)" id="loginForm">
+      <input type="text" id="emailInput" placeholder="E-Mail" />
+      <input type="password" id="passwordInput" placeholder="Password" />
+      <input type="submit">
+    </form>
+    <a href="#" id="signUpLink"><p>Sign up</p></a>
+    <form onsubmit="signUp(event)" id="signUpForm">
+      <input type="text" id="emailSignUpInput" placeholder="E-Mail" />
+      <input type="text" id="usernameSignUpInput" placeholder="Name" />
+      <input type="password" id="passwordSignUpInput" placeholder="Password" />
+      <input type="submit">
+    </form>
+    <a href="#" id="signInLink"><p>Sign in</p></a>
+  </div>
+
+  <div class="wrapper" id="appContent">
     <header>
       <h1>Shopping List</h1>
       <h3>Save all your items here, so you are ready to shop!</h3>
+      <a href="#" onclick="logout()">
+        <p>Log Out</p>
+      </a>
     </header>
     <hr />
     <div id="shoppingList">
 
     </div>
-    <form onsubmit="saveToList(event)" id="inputForm">
+    <form id="inputForm">
       <input type="text" id="name" placeholder="Name" />
       <input type="number" id="quantity" placeholder="Quantity" />
       <select id="measurement">
-          <option value="kg">kg</option>
-          <option value="gr">gr</option>
-          <option value="l">l</option>
-          <option value="ml">ml</option>
-          <option value="pcs">pcs</option>
+        <option value="kg">kg</option>
+        <option value="gr">gr</option>
+        <option value="l">l</option>
+        <option value="ml">ml</option>
+        <option value="pcs">pcs</option>
       </select>
       <input type="submit">
     </form>
     <div class="popUpWrapper">
-        <div class="popUpContainer">
-    
-        </div>
+      <div class="popUpContainer">
+
       </div>
+    </div>
   </div>
 
   <!-- Import and configure the Firebase SDK -->
   <!-- These scripts are made available when the app is served or deployed on Firebase Hosting -->
   <!-- If you do not serve/host your project using Firebase Hosting see https://firebase.google.com/docs/web/setup -->
-  <script src="/__/firebase/3.9.0/firebase-app.js"></script>
-  <script src="/__/firebase/3.9.0/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-database.js"></script>
   <script src="/__/firebase/init.js"></script>
 
   <!-- <script src="scripts/main.js"></script> -->
@@ -110,13 +135,31 @@
     font-size: 1.7rem;
   }
 
+  header a {
+    font-size: 1.4rem;
+    color: #f1efef;
+    text-decoration: none;
+    font-weight: 700;
+    display: inline-block;
+    padding: 1rem;
+    transform: scale(1) rotate(0deg);
+    transition: 250ms ease all;
+  }
+
+
+  header a:hover {
+    transform: scale(1.1) rotate(-3deg)
+  }
+
+
+
   .wrapper {
     max-width: 120rem;
     margin: 8rem auto;
     margin-bottom: 0;
     background-color: #faf9f9;
     box-shadow: 0 2rem 6rem rgba(0, 0, 0, 0.3);
-    min-height: 50rem;
+    min-height: 60rem;
     position: relative;
   }
 
@@ -124,6 +167,16 @@
     margin: 0 auto;
     max-width: 120rem;
     position: relative;
+  }
+
+  #loginForm,
+  #signUpForm {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    width: 50%;
+    margin: 0 auto;
+    margin-top: 11rem;
   }
 
   #editForm {
@@ -135,7 +188,9 @@
   #editForm input,
   #editForm select,
   #inputForm input,
-  #inputForm select {
+  #inputForm select,
+  #loginForm input,
+  #signUpForm input {
     color: #777;
     font-size: 1.7rem;
     font-family: inherit;
@@ -148,16 +203,26 @@
     margin-right: 1rem;
   }
 
+  #loginForm input,
+  #signUpForm input {
+    margin-top: 2rem;
+    background-color: #f1efef;
+  }
+
   #editForm input:focus,
   #editForm select:focus,
   #inputForm input:focus,
-  #inputForm select:focus {
+  #inputForm select:focus,
+  #loginForm input:focus,
+  #signUpForm input:focus {
     outline: none;
     border-bottom: 0.3rem solid #FFA000;
   }
 
   #editForm input[type="submit"],
-  #inputForm input[type="submit"] {
+  #inputForm input[type="submit"],
+  #loginForm input[type="submit"],
+  #signUpForm input[type="submit"] {
     background-color: #FFA000;
     color: #fff;
     font-weight: 400;
@@ -165,7 +230,7 @@
     margin-right: none;
   }
 
-   #inputForm {
+  #inputForm {
     display: flex;
     width: 100%;
     justify-content: center;
@@ -177,7 +242,8 @@
   #inputForm select {
     background-color: #fff;
   }
-/*
+
+  /*
   #inputForm input:focus,
   #inputForm select:focus {
     outline: none;
@@ -274,28 +340,39 @@
     fill: #FFA000;
   }
 
-@media only screen and (max-width: 715px) {
-  #inputForm {
-    flex-direction: column;
+  #signUpLink,
+  #signInLink {
+    text-decoration: none;
+    text-align: center;
+    font-size: 1.7rem;
   }
-  #inputForm input,
-  #inputForm select {
-    width: 80%;
-    margin-top: 1rem;
+  #signUpLink p,
+  #signInLink p {
+    margin-top: 2rem;
   }
-}
 
-@media only screen and (max-width: 880px) {
-  #editForm {
-    flex-direction: column;
-    align-items: center;
+  @media only screen and (max-width: 715px) {
+    #inputForm {
+      flex-direction: column;
+    }
+    #inputForm input,
+    #inputForm select {
+      width: 80%;
+      margin-top: 1rem;
+    }
   }
-  #editForm input,
-  #editForm select {
-    width: 80%;
-    margin-top: 1rem;
+
+  @media only screen and (max-width: 880px) {
+    #editForm {
+      flex-direction: column;
+      align-items: center;
+    }
+    #editForm input,
+    #editForm select {
+      width: 80%;
+      margin-top: 1rem;
+    }
   }
-}
 </style>
 
 </html>
