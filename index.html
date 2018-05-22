@@ -32,14 +32,14 @@
     <form onsubmit="login(event)" id="loginForm">
       <input type="text" id="emailInput" placeholder="E-Mail" />
       <input type="password" id="passwordInput" placeholder="Password" />
-      <input type="submit">
+      <button type="submit">Sign in</button>
     </form>
     <a href="#" id="signUpLink"><p>Sign up</p></a>
     <form onsubmit="signUp(event)" id="signUpForm">
       <input type="text" id="emailSignUpInput" placeholder="E-Mail" />
       <input type="text" id="usernameSignUpInput" placeholder="Name" />
       <input type="password" id="passwordSignUpInput" placeholder="Password" />
-      <input type="submit">
+      <button type="submit">Sign up</button>
     </form>
     <a href="#" id="signInLink"><p>Sign in</p></a>
   </div>
@@ -66,7 +66,7 @@
         <option value="ml">ml</option>
         <option value="pcs">pcs</option>
       </select>
-      <input type="submit">
+      <button type="submit">Add</button>
     </form>
     <div class="popUpWrapper">
       <div class="popUpContainer">
@@ -81,7 +81,7 @@
   <script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-database.js"></script>
-  <script src="/__/firebase/init.js"></script>
+  <!-- <script src="/__/firebase/init.js"></script> -->
 
   <!-- <script src="scripts/main.js"></script> -->
   <script src="scripts/app.js"></script>
@@ -179,6 +179,11 @@
     margin-top: 11rem;
   }
 
+  #signUpForm,
+  #signInLink {
+    display: none;
+  }
+
   #editForm {
     display: flex;
     width: 100%;
@@ -207,6 +212,18 @@
   #signUpForm input {
     margin-top: 2rem;
     background-color: #f1efef;
+    width: 100%;
+  }
+
+  #signUpForm button,
+  #loginForm  button {
+    margin-top: 2rem;
+  }
+
+  #loginForm,
+  #signUpForm {
+    /* JS */
+    display: none;
   }
 
   #editForm input:focus,
@@ -219,15 +236,18 @@
     border-bottom: 0.3rem solid #FFA000;
   }
 
-  #editForm input[type="submit"],
-  #inputForm input[type="submit"],
-  #loginForm input[type="submit"],
-  #signUpForm input[type="submit"] {
+  #editForm button[type="submit"],
+  #inputForm button[type="submit"],
+  #loginForm button[type="submit"],
+  #signUpForm button[type="submit"] {
     background-color: #FFA000;
     color: #fff;
     font-weight: 400;
     cursor: pointer;
     margin-right: none;
+    border: none;
+    padding: 1.5rem 2rem;
+    font-size: 1.7rem;
   }
 
   #inputForm {
@@ -242,21 +262,6 @@
   #inputForm select {
     background-color: #fff;
   }
-
-  /*
-  #inputForm input:focus,
-  #inputForm select:focus {
-    outline: none;
-    border-bottom: 0.3rem solid #FFA000;
-  }
-
-  #inputForm input[type="submit"] {
-    background-color: #FFA000;
-    color: #fff;
-    font-weight: 400;
-    cursor: pointer;
-    margin-right: none;
-  } */
 
   #shoppingList {
     padding: 3rem;
@@ -345,10 +350,17 @@
     text-decoration: none;
     text-align: center;
     font-size: 1.7rem;
+    /* JS */
+    display: none;
   }
   #signUpLink p,
   #signInLink p {
     margin-top: 2rem;
+  }
+
+  #appContent {
+    /* JS */
+    display: none;
   }
 
   @media only screen and (max-width: 715px) {
@@ -356,9 +368,11 @@
       flex-direction: column;
     }
     #inputForm input,
-    #inputForm select {
+    #inputForm select,
+    #inputForm button {
       width: 80%;
       margin-top: 1rem;
+      margin-right: 0;
     }
     .wrapper {
       margin-top: 0;
@@ -371,9 +385,20 @@
       align-items: center;
     }
     #editForm input,
-    #editForm select {
+    #editForm select,
+    #editForm button {
       width: 80%;
       margin-top: 1rem;
+      margin-right: 0;
+    }
+    .popUpContainer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+    }
+
+    .shopping-list-ware {
+      margin: 1rem 0;
     }
   }
 </style>
